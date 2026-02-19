@@ -20,10 +20,14 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migration:generate:dev": "NODE_ENV=development npm run typeorm -- migration:generate src/database/migrations/migration -d src/database/data-source.ts",
     "migration:generate:prod": "NODE_ENV=production npm run typeorm -- migration:generate src/database/migrations/migration -d src/database/data-source.ts",
+    "migration:show:dev": "NODE_ENV=development npm run typeorm -- migration:show -d src/database/data-source.ts",
+    "migration:show:prod": "NODE_ENV=production npm run typeorm -- migration:show -d src/database/data-source.ts",
     "migration:run:dev": "NODE_ENV=development npm run typeorm -- migration:run -d src/database/data-source.ts",
     "migration:run:prod": "NODE_ENV=production npm run typeorm -- migration:run -d src/database/data-source.ts",
     "migration:revert:dev": "NODE_ENV=development npm run typeorm -- migration:revert -d src/database/data-source.ts",
     "migration:revert:prod": "NODE_ENV=production npm run typeorm -- migration:revert -d src/database/data-source.ts",
+    "migration:fake:dev": "NODE_ENV=development npm run typeorm -- query \"INSERT INTO migrations (timestamp, name) VALUES (1708301400000, 'CreateUserTable1708301400000')\" -d src/database/data-source.ts",
+    "migration:fake:prod": "NODE_ENV=production npm run typeorm -- query \"INSERT INTO migrations (timestamp, name) VALUES (1708301400000, 'CreateUserTable1708301400000')\" -d src/database/data-source.ts",
     "typeorm": "typeorm-ts-node-esm"
   },
   "keywords": [
