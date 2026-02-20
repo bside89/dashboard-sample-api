@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=development
+RUN npm ci
 
 # Copy source code
 COPY . .
@@ -32,7 +32,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install only production dependencies
-RUN npm ci --only=production && npm cache clean --force
+RUN npm ci --omit=dev && npm cache clean --force
 
 # Copy built application from development stage
 COPY --from=development /usr/src/app/dist ./dist
