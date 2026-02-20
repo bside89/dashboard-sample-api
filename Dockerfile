@@ -47,5 +47,5 @@ USER nestjs
 # Expose port
 EXPOSE 3000
 
-# Start the application
-CMD ["node", "dist/main"]
+# Start the application and ensure migrations are run before starting
+CMD ["./railway-start.sh"]
