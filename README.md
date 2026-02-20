@@ -1,275 +1,249 @@
 # Dashboard Sample API
 
-Uma API RESTful construída com NestJS, PostgreSQL e Swagger para demonstração de um dashboard.
+API RESTful desenvolvida com NestJS para servir como exemplo de dashboard com CRUD completo para usuários.
 
 ## 🚀 Tecnologias
 
-- **Node.js** - Runtime JavaScript
-- **NestJS** - Framework Node.js progressivo
+- **NestJS** v11+ - Framework progressivo do Node.js
 - **TypeScript** - Linguagem tipada
-- **PostgreSQL** - Banco de dados relacional
-- **TypeORM** - ORM para TypeScript
-- **Swagger** - Documentação da API
+- **PostgreSQL** - Banco de dados
+- **TypeORM** - ORM para TypeScript/JavaScript
 - **Docker** - Containerização
+- **Swagger/OpenAPI** - Documentação da API
+- **Railway** - Plataforma de deploy
 
-## 📋 Pré-requisitos
+## 📦 Recursos
 
-- Node.js (versão 18+)
-- PostgreSQL (versão 15+)
-- Docker e Docker Compose (para execução containerizada)
-- npm ou yarn
+### Usuários (CRUD Completo)
 
-## 🛠️ Configuração do Ambiente
+- ✅ Criar usuário (`POST /users`)
+- ✅ Listar usuários (`GET /users`)
+- ✅ Buscar usuário por ID (`GET /users/:id`)
+- ✅ Atualizar usuário (`PUT /users/:id`)
+- ✅ Deletar usuário (`DELETE /users/:id`)
 
-### Banco de Dados Local
+### Migrations
 
-Certifique-se de que o PostgreSQL está instalado e rodando localmente. Crie o banco de dados:
+- ✅ Sistema de migrations automático
+- ✅ Migrations condicionais (desenvolvimento vs produção)
+- ✅ Rollback de migrations
 
-```sql
-CREATE DATABASE "dashboard-sample";
+## 🏗️ Estrutura do Projeto
+
+```
+src/
+├── database/           # Configuração do banco e migrations
+│   ├── data-source.ts
+│   └── migrations/
+├── users/              # Módulo de usuários
+│   ├── dto/           # Data Transfer Objects
+│   ├── entities/      # Entidades do banco
+│   ├── users.controller.ts
+│   ├── users.service.ts
+│   └── users.module.ts
+├── app.module.ts      # Módulo principal
+└── main.ts           # Ponto de entrada
 ```
 
-**Configuração padrão esperada:**
+## 🛠️ Configuração Local
 
-- Host: `localhost`
-- Porta: `5432`
-- Usuário: `postgres`
-- Senha: `postgres`
-- Database: `dashboard-sample`
+### Pré-requisitos
 
-### Variáveis de Ambiente
+- Node.js 18+
+- PostgreSQL
+- Docker (opcional)
 
-O projeto usa arquivos `.env` específicos para cada ambiente:
-
-- `.env.development` - Configurações de desenvolvimento (já configurado)
-- `.env.production` - Configurações de produção (a ser configurado)
-
-## 📦 Instalação
-
-1. Clone o repositório:
-
-```bash
-git clone <url-do-repositorio>
-cd dashboard-sample-api
-```
-
-2. Instale as dependências:
+### 1. Instalação
 
 ```bash
 npm install
 ```
 
-3. Execute as migrations do banco de dados:
+### 2. Configuração do Banco (Desenvolvimento)
+
+```bash
+# PostgreSQL local (sem SSL)
+DATABASE_URL=postgresql://usuario:senha@localhost:5432/dashboard_db
+PORT=3000
+NODE_ENV=development
+```
+
+### 3. Executar Migrations
 
 ```bash
 npm run migration:run:dev
 ```
 
-## 🎯 Execução
-
-### Desenvolvimento Local
+### 4. Iniciar Aplicação
 
 ```bash
-# Modo desenvolvimento com hot reload
+# Desenvolvimento (com watch)
 npm run start:dev
 
-# Modo debug
-npm run start:debug
-```
-
-### Produção Local
-
-```bash
-# Build da aplicação
-npm run build
-
-# Execução em produção
+# Produção
 npm run start:prod
 ```
 
-### Docker
-
-#### Desenvolvimento
-
-```bash
-# Subir toda a stack (aplicação + PostgreSQL + Adminer)
-docker-compose up -d
-
-# Verificar logs
-docker-compose logs -f app
-```
-
-#### Produção
-
-```bash
-# Configurar variáveis no .env.production primeiro
-# Depois executar:
-docker-compose -f docker-compose.prod.yml up -d
-```
-
-## 📚 Documentação da API
-
-Após iniciar a aplicação, a documentação Swagger estará disponível em:
-
-- **Desenvolvimento**: http://localhost:3000/api
-- **Produção**: http://[seu-host]:3000/api
-
-### Endpoints Disponíveis
-
-| Método | Endpoint     | Descrição               |
-| ------ | ------------ | ----------------------- |
-| GET    | `/users`     | Lista todos os usuários |
-| GET    | `/users/:id` | Busca usuário por ID    |
-| POST   | `/users`     | Cria novo usuário       |
-| PATCH  | `/users/:id` | Atualiza usuário        |
-| DELETE | `/users/:id` | Remove usuário          |
-
-### Exemplo de Payload (POST /users)
-
-```json
-{
-  "name": "João Silva",
-  "birthdate": "1990-01-01",
-  "role": "user",
-  "document_number": "12345678901"
-}
-```
-
-## 🗃️ Modelo de Dados
-
-### Entidade User
-
-| Campo             | Tipo     | Descrição                     |
-| ----------------- | -------- | ----------------------------- |
-| `id`              | number   | ID único (auto-increment)     |
-| `name`            | string   | Nome do usuário (obrigatório) |
-| `birthdate`       | date     | Data de nascimento            |
-| `created_at`      | datetime | Data de criação               |
-| `updated_at`      | datetime | Data de atualização           |
-| `role`            | string   | Função (padrão: "user")       |
-| `document_number` | string   | CPF/CNPJ (único, obrigatório) |
-
-## 🛢️ Migrations de Banco de Dados
-
-### Desenvolvimento
-
-```bash
-# Gerar migration
-npm run migration:generate:dev
-
-# Executar migrations
-npm run migration:run:dev
-
-# Reverter última migration
-npm run migration:revert:dev
-```
-
-### Produção
-
-```bash
-# Gerar migration
-npm run migration:generate:prod
-
-# Executar migrations
-npm run migration:run:prod
-
-# Reverter última migration
-npm run migration:revert:prod
-```
-
-## 🧪 Testes
-
-```bash
-# Testes unitários
-npm run test
-
-# Testes em modo watch
-npm run test:watch
-
-# Testes com coverage
-npm run test:cov
-
-# Testes e2e
-npm run test:e2e
-```
-
-## 📋 Scripts Disponíveis
-
-| Script                       | Descrição                      |
-| ---------------------------- | ------------------------------ |
-| `npm run start:dev`          | Desenvolvimento com hot reload |
-| `npm run start:prod`         | Produção                       |
-| `npm run start:staging`      | Homologação                    |
-| `npm run build`              | Build da aplicação             |
-| `npm run migration:run:dev`  | Executar migrations (dev)      |
-| `npm run migration:run:prod` | Executar migrations (prod)     |
-| `npm run lint`               | Verificar código com ESLint    |
-| `npm run format`             | Formatar código com Prettier   |
-
 ## 🐳 Docker
 
-### Desenvolvimento com Docker
+### Desenvolvimento com Hot Reload
 
-O arquivo `docker-compose.yml` inclui:
+```bash
+# Iniciar banco + aplicação
+docker-compose up
 
-- **app**: Aplicação NestJS
-- **postgres**: Banco PostgreSQL
-- **adminer**: Interface web para PostgreSQL (http://localhost:8080)
-
-### Produção com Docker
-
-Use o arquivo `docker-compose.prod.yml` para ambiente de produção.
-
-## 🔧 Estrutura do Projeto
-
-```
-src/
-├── database/           # Configurações do banco
-│   ├── data-source.ts  # DataSource do TypeORM
-│   └── migrations/     # Migrations
-├── users/              # Módulo de usuários
-│   ├── dto/            # Data Transfer Objects
-│   ├── entities/       # Entidades do banco
-│   ├── users.controller.ts
-│   ├── users.service.ts
-│   └── users.module.ts
-├── app.module.ts       # Módulo principal
-└── main.ts             # Ponto de entrada
+# Aplicação disponível em: http://localhost:3000
 ```
 
-## 🔒 Segurança
+### Build de Produção
 
-- Validação de entrada com class-validator
-- CORS habilitado
-- Pipes de validação globais
-- Sanitização de dados
+```bash
+# Build da imagem
+docker build --target production -t dashboard-api .
 
-## 🚀 Deploy
+# Executar
+docker run -p 3000:3000 --env-file .env dashboard-api
+```
 
-### Preparação para Produção
+## ☁️ Deploy no Railway
 
-1. Configure as variáveis no `.env.production`
-2. Execute o build: `npm run build`
-3. Execute as migrations: `npm run migration:run:prod`
-4. Inicie a aplicação: `npm run start:prod`
+### 1. Preparação
 
-### Deploy com Docker
+O projeto está configurado para deploy automático no Railway com:
 
-1. Configure `.env.production`
-2. Execute: `docker-compose -f docker-compose.prod.yml up -d`
+- ✅ Detecção automática de SSL/ambiente
+- ✅ Migrations automáticas na inicialização
+- ✅ Configuração de produção otimizada
+
+### 2. Variáveis de Ambiente (Railway)
+
+```bash
+NODE_ENV=production
+PORT=3000
+DATABASE_URL=postgresql://usuario:senha@host:porta/db?sslmode=require
+```
+
+### 3. Scripts de Deploy
+
+- **Build**: `npm run build`
+- **Start**: `node railway-start.js` (executa migrations + inicia app)
+
+### 4. Processo de Deploy
+
+1. Railway detecta o projeto NestJS
+2. Executa `npm install` + `npm run build`
+3. Inicia com `node railway-start.js`:
+   - Aguarda banco estar pronto
+   - Executa migrations em produção
+   - Inicia aplicação
+
+## 📖 Documentação da API
+
+### Swagger UI
+
+Após iniciar a aplicação, acesse:
+
+- **Local**: http://localhost:3000/api
+- **Railway**: https://seu-app.railway.app/api
+
+### Endpoints Principais
+
+#### Usuários
+
+```bash
+# Criar usuário
+POST /users
+{
+  "name": "João Silva",
+  "birthdate": "1990-05-15",
+  "role": "admin",
+  "document_number": "12345678901"
+}
+
+# Listar usuários
+GET /users
+
+# Buscar por ID
+GET /users/1
+
+# Atualizar usuário
+PUT /users/1
+{
+  "name": "João Santos",
+  "role": "user"
+}
+
+# Deletar usuário
+DELETE /users/1
+```
+
+## 🔧 Scripts Disponíveis
+
+```bash
+# Desenvolvimento
+npm run start:dev          # Inicia com hot reload
+npm run start:debug        # Inicia em modo debug
+
+# Produção
+npm run build              # Build do TypeScript
+npm run start:prod         # Inicia aplicação compilada
+
+# Migrations
+npm run migration:generate:dev   # Gera migration (dev)
+npm run migration:run:dev        # Executa migrations (dev)
+npm run migration:run:prod       # Executa migrations (prod)
+npm run migration:revert:dev     # Reverte última migration (dev)
+npm run migration:show:dev       # Mostra migrations pendentes
+
+# Testes
+npm run test               # Executa testes
+npm run test:watch         # Testes em modo watch
+npm run test:cov           # Testes com coverage
+
+# Linting
+npm run lint               # Verifica código
+npm run format             # Formata código
+```
+
+## 🔒 Configuração de SSL
+
+O projeto detecta automaticamente o ambiente e configura SSL:
+
+- **Desenvolvimento**: SSL desabilitado
+- **Produção/Railway**: SSL obrigatório
+- **Staging**: SSL opcional
+
+## 🐛 Troubleshooting
+
+### Problemas Comuns
+
+1. **Erro de conexão SSL**
+
+   ```bash
+   # Verifique se NODE_ENV está correto
+   echo $NODE_ENV
+
+   # Para desenvolvimento local, use:
+   NODE_ENV=development
+   ```
+
+2. **Migrations não executam**
+
+   ```bash
+   # Verifique se o build está atualizado
+   npm run build
+
+   # Execute migrations manualmente
+   npm run migration:run:prod
+   ```
+
+3. **Railway deploy falha**
+   ```bash
+   # Verifique logs do Railway
+   # Certifique-se que DATABASE_URL está configurado
+   # Aguarde alguns segundos para o banco estar pronto
+   ```
 
 ## 📄 Licença
 
-Este projeto está sob a licença ISC.
-
-## 🤝 Contribuição
-
-1. Fork o projeto
-2. Crie sua feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
-## 📞 Suporte
-
-Para suporte, abra uma issue no repositório do projeto.
+ISC License

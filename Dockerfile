@@ -48,4 +48,4 @@ USER nestjs
 EXPOSE 3000
 
 # Start the application and ensure migrations are run before starting
-CMD ["./railway-start.sh"]
+CMD ["npm", "run", "start"]
