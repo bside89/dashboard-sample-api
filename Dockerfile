@@ -37,6 +37,9 @@ RUN npm ci --omit=dev && npm cache clean --force
 # Copy built application from development stage
 COPY --from=development /usr/src/app/dist ./dist
 
+# Copy railway start script
+COPY railway-start.js ./
+
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nestjs -u 1001
