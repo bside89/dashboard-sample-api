@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   app:
     build:
@@ -8,11 +6,11 @@ services:
     container_name: dashboard-api-dev
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NODE_ENV=development
     env_file:
-      - .env.development
+      - .env.development-docker
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -26,7 +24,7 @@ services:
     container_name: dashboard-postgres-dev
     restart: unless-stopped
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -41,7 +39,7 @@ services:
     container_name: dashboard-adminer-dev
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - '8080:8080'
     depends_on:
       - postgres
     networks:

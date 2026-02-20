@@ -16,6 +16,12 @@ COPY . .
 # Build the application
 RUN npm run build
 
+# Expose port
+EXPOSE 3000
+
+# Start the application in development mode
+CMD ["npm", "run", "start:dev"]
+
 # Production stage
 FROM node:18-alpine AS production
 
